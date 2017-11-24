@@ -2,7 +2,10 @@
  * Driver for Sensirion SHT3x digital temperature and humidity sensor
  * connected to I2C
  *
- * Part of esp-open-rtos
+ * This driver is for the usage with the ESP8266 and FreeRTOS (esp-open-rtos)
+ * [https://github.com/SuperHouse/esp-open-rtos]. It is also working with ESP32
+ * and ESP-IDF [https://github.com/espressif/esp-idf.git] as well as Linux
+ * based systems using a wrapper library for ESP8266 functions.
  *
  * ----------------------------------------------------------------
  *
@@ -36,13 +39,6 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
-
-/**
- * Driver for Sensirion SHT3x digital temperature and humity sensor
- * connected to I2C
- *
- * Part of esp-open-rtos
  */
 
 #include <string.h>
