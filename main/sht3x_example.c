@@ -10,63 +10,21 @@
  *
  * Harware configuration:
  *
- *   +------------------------+     +----------+
- *   | ESP8266  Bus 0         |     | SHT3x    |
- *   |          GPIO 5 (SCL)  ------> SCL      |
- *   |          GPIO 4 (SDA)  ------- SDA      |
- *   +------------------------+     +----------+
- *
- *   +------------------------+     +----------+
- *   | ESP32    Bus 0         |     | SHT3x    |
- *   |          GPIO 16 (SCL) ------> SCL      |
- *   |          GPIO 17 (SDA) ------- SDA      |
- *   +------------------------+     +----------+
- *
- * Please note: To disable assertion when vTaskDelayUntil is used on
- * ESP32 in ESP-IDF either change in sdconfig
- *
- *      CONFIG_FREERTOS_ASSERT_ON_UNTESTED_FUNCTION=n
- *
- * or use *make menuconfig* and DISABLE option
- *
- *      Component config --> FreeRTOS -->  
- *      Halt when an SMP-untested function is called
+ *   +---------------+   +----------+       +---------------+   +----------+
+ *   | ESP8266       |   | SHT3x    |       | ESP32         |   | SHT3x    |
+ *   |               |   |          |       |               |   |          |
+ *   | GPIO 5 (SCL)  ----> SCL      |       | GPIO 16 (SCL) ----> SCL      |
+ *   | GPIO 4 (SDA)  <---> SDA      |       | GPIO 17 (SDA) <---> SDA      |
+ *   +---------------+   +----------+       +---------------+   +----------+
  */
 
 // #define SINGLE_SHOT_LOW_LEVEL
 // #define SINGLE_SHOT_HIGH_LEVEL
 
-/* -- platform dependent includes ----------------------------- */
-
-#ifdef ESP_PLATFORM  // ESP32 (ESP-IDF)
-
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
-#include "esp8266_wrapper.h"
-
-#include "sht3x.h"
-
-#include <sys/time.h>
-
-#else  // ESP8266 (esp-open-rtos)
-
-#define TASK_STACK_DEPTH 256
+/* -- includes --------------------------------------------- */
 
 #include <stdio.h>
-
-#include "espressif/esp_common.h"
-#include "espressif/sdk_private.h"
-
-#include "esp/uart.h"
-#include "i2c/i2c.h"
-
-#include "FreeRTOS.h"
-#include "task.h"
-
-#include "sht3x/sht3x.h"
-
-#endif
+#include "sht3x.h"
 
 /** -- platform dependent definitions ------------------------------ */
 
@@ -192,17 +150,11 @@ void user_task (void *pvParameters)
 }
 #endif
 
-#ifdef ESP_PLATFORM  // ESP32 (ESP-IDF)
-void app_main()
-#else // esp-open-rtos (ESP8266)
 void user_init(void)
-#endif
 {
-    #ifdef ESP_OPEN_RTOS  // ESP8266
     // Set UART Parameter.
     uart_set_baud(0, 115200);
-    #endif
-
+    // Give the UART some time to settle
     vTaskDelay(1);
     
     // Init I2C bus interfaces at which SHT3x sensors are connected

@@ -11,7 +11,7 @@
  *
  * The BSD License (3-clause license)
  *
- * Copyright (c) 2017 Gunar Schorcht (https://github.com/gschorcht
+ * Copyright (c) 2017 Gunar Schorcht (https://github.com/gschorcht)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
  
-#ifndef DRIVER_SHT3x_H_
-#define DRIVER_SHT3x_H_
+#ifndef __SHT3x_H__
+#define __SHT3x_H__
 
 // Uncomment to enable debug output
 // #define SHT3x_DEBUG_LEVEL_1     // only error messages
@@ -50,6 +50,8 @@
 
 #include "stdint.h"
 #include "stdbool.h"
+
+#include "sht3x_platform.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -275,4 +277,4 @@ bool sht3x_get_results (sht3x_sensor_t* dev,
 }
 #endif
 
-#endif /* DRIVER_SHT3x_H_ */
+#endif /* __SHT3x_H__ */
