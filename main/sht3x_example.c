@@ -10,49 +10,44 @@
  *
  * Harware configuration:
  *
- *   +---------------+   +----------+       +---------------+   +----------+
- *   | ESP8266       |   | SHT3x    |       | ESP32         |   | SHT3x    |
- *   |               |   |          |       |               |   |          |
- *   | GPIO 5 (SCL)  ----> SCL      |       | GPIO 16 (SCL) ----> SCL      |
- *   | GPIO 4 (SDA)  <---> SDA      |       | GPIO 17 (SDA) <---> SDA      |
- *   +---------------+   +----------+       +---------------+   +----------+
+ *    +-----------------+     +----------+
+ *    | ESP8266 / ESP32 |     | SHT3x    |
+ *    |                 |     |          |
+ *    |   GPIO 14 (SCL) ------> SCL      |
+ *    |   GPIO 13 (SDA) <-----> SDA      |
+ *    +-----------------+     +----------+
  */
+
+/* -- use following constants to define the example mode ----------- */
 
 // #define SINGLE_SHOT_LOW_LEVEL
 // #define SINGLE_SHOT_HIGH_LEVEL
 
-/* -- includes --------------------------------------------- */
+/* -- includes ----------------------------------------------------- */
 
-#include <stdio.h>
 #include "sht3x.h"
 
-/** -- platform dependent definitions ------------------------------ */
+/* -- platform dependent definitions ------------------------------- */
 
 #ifdef ESP_PLATFORM  // ESP32 (ESP-IDF)
 
-// user task stack depth
+// user task stack depth for ESP32
 #define TASK_STACK_DEPTH 2048
-
-// define I2C interfaces for L3GD20H sensors
-#define I2C_BUS       0
-#define I2C_SCL_PIN   16
-#define I2C_SDA_PIN   17
-#define I2C_FREQ      100000
 
 #else  // ESP8266 (esp-open-rtos)
 
-// user task stack depth
+// user task stack depth for ESP8266
 #define TASK_STACK_DEPTH 256
-
-// define I2C interfaces for L3GD20H sensors
-#define I2C_BUS       0
-#define I2C_SCL_PIN   5
-#define I2C_SDA_PIN   4
-#define I2C_FREQ      I2C_FREQ_100K
 
 #endif  // ESP_PLATFORM
 
-/* -- user tasks ---------------------------------------------- */
+// I2C interface defintions for ESP32 and ESP8266
+#define I2C_BUS       0
+#define I2C_SCL_PIN   14
+#define I2C_SDA_PIN   13
+#define I2C_FREQ      I2C_FREQ_100K
+
+/* -- user tasks --------------------------------------------------- */
 
 static sht3x_sensor_t* sensor;    // sensor device data structure
 
@@ -149,6 +144,8 @@ void user_task (void *pvParameters)
     }
 }
 #endif
+
+/* -- main program ------------------------------------------------- */
 
 void user_init(void)
 {
